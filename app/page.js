@@ -69,11 +69,6 @@ export default function HomePage() {
     await loadTasks();
   }
 
-  async function openTask(taskId) {
-    setOpenTaskId((prev) => (prev === taskId ? null : taskId));
-    if (openTaskId !== taskId) await loadNotes(taskId);
-  }
-
   async function addNote(e, taskId) {
     e.preventDefault();
     const text = (newNoteByTask[taskId] || '').trim();
@@ -91,6 +86,39 @@ export default function HomePage() {
     }
 
     setNewNoteByTask((prev) => ({ ...prev, [taskId]: '' }));
+    await loadNotes(taskId);
+  }
+
+  async function persistDraftNote(taskId) {
+    const text = (newNoteByTask[taskId] || '').trim();
+    if (!text) return;
+
+    const res = await fetch('/api/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskId, content: text }),
+    });
+
+    if (!res.ok) return;
+
+    setNewNoteByTask((prev) => ({ ...prev, [taskId]: '' }));
+    await loadNotes(taskId);
+  }
+
+  async function handleTaskPanel(taskId) {
+    const wasOpenTaskId = openTaskId;
+
+    if (wasOpenTaskId && wasOpenTaskId !== taskId) {
+      await persistDraftNote(wasOpenTaskId);
+    }
+
+    if (wasOpenTaskId === taskId) {
+      await persistDraftNote(taskId);
+      setOpenTaskId(null);
+      return;
+    }
+
+    setOpenTaskId(taskId);
     await loadNotes(taskId);
   }
 
@@ -128,7 +156,7 @@ export default function HomePage() {
 
             return (
               <article key={task.id} className={`task-card ${task.done ? 'done' : ''}`}>
-                <button className="task-head" onClick={() => openTask(task.id)}>
+                <button className="task-head" onClick={() => handleTaskPanel(task.id)}>
                   <span className="left">
                     <input
                       type="checkbox"
