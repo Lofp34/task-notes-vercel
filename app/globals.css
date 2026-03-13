@@ -1,100 +1,152 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
 
 :root {
-  --bg: #070b14;
-  --bg2: #0f172a;
-  --card: rgba(14, 22, 40, 0.8);
-  --line: rgba(148, 163, 184, 0.22);
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --a1: #38bdf8;
-  --a2: #22c55e;
+  --bg-start: #e2ebff;
+  --bg-end: #c7d8ff;
+  --glass: rgba(255, 255, 255, 0.35);
+  --glass-strong: rgba(255, 255, 255, 0.6);
+  --line: rgba(255, 255, 255, 0.55);
+  --line-soft: rgba(66, 86, 152, 0.18);
+  --text: #16213f;
+  --muted: #4b5f8f;
+  --accent: #5376ff;
+  --accent-2: #7d9bff;
+  --good: #0ea972;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+
 body {
-  font-family: 'Instrument Sans', sans-serif;
+  min-height: 100vh;
+  font-family: 'Manrope', sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at 12% 10%, rgba(56,189,248,.24), transparent 32%),
-    radial-gradient(circle at 90% 80%, rgba(34,197,94,.2), transparent 30%),
-    linear-gradient(140deg, var(--bg) 0%, var(--bg2) 100%);
+    radial-gradient(circle at 12% 14%, rgba(255, 255, 255, 0.85), transparent 24%),
+    radial-gradient(circle at 88% 11%, rgba(148, 188, 255, 0.46), transparent 32%),
+    radial-gradient(circle at 80% 88%, rgba(112, 157, 255, 0.35), transparent 34%),
+    linear-gradient(150deg, var(--bg-start), var(--bg-end));
 }
 
-.app { min-height: 100vh; padding: 14px; }
+.app {
+  min-height: 100vh;
+  padding: max(16px, env(safe-area-inset-top)) 14px max(22px, env(safe-area-inset-bottom));
+}
+
 .shell {
-  max-width: 860px;
+  max-width: 900px;
   margin: 0 auto;
   border: 1px solid var(--line);
-  background: rgba(2, 6, 23, .45);
-  backdrop-filter: blur(10px);
-  border-radius: 24px;
-  box-shadow: 0 18px 44px rgba(0,0,0,.35);
-  padding: 16px;
+  border-radius: 30px;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.24));
+  backdrop-filter: blur(22px) saturate(1.45);
+  -webkit-backdrop-filter: blur(22px) saturate(1.45);
+  box-shadow: 0 22px 60px rgba(30, 56, 118, 0.16);
+  padding: clamp(16px, 2.6vw, 28px);
 }
 
-.hero { margin-bottom: 14px; }
+.hero { margin-bottom: 16px; }
+
 .kicker {
   margin: 0 0 8px;
-  color: var(--a1);
-  letter-spacing: .11em;
-  font-size: 12px;
-  font-weight: 700;
-}
-h1 {
-  margin: 0;
-  font-family: 'Sora', sans-serif;
-  font-size: clamp(24px, 5vw, 36px);
+  color: var(--accent);
+  letter-spacing: .1em;
+  font-size: 11px;
   font-weight: 800;
 }
-.sub { margin: 8px 0 0; color: var(--muted); }
+
+h1 {
+  margin: 0;
+  font-size: clamp(28px, 5.2vw, 44px);
+  line-height: 1.06;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.sub {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: clamp(14px, 2.9vw, 17px);
+}
 
 .new-task {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 8px;
-  margin: 14px 0;
+  gap: 10px;
+  margin: 16px 0 12px;
 }
 
-input, textarea, button {
+input,
+textarea,
+button {
   font: inherit;
-  border-radius: 14px;
+  border-radius: 16px;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
-  border: 1px solid var(--line);
-  background: rgba(15, 23, 42, .72);
+  border: 1px solid var(--line-soft);
+  background: var(--glass-strong);
   color: var(--text);
-  padding: 11px 12px;
+  padding: 13px 14px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(83, 118, 255, 0.48);
+  box-shadow: 0 0 0 4px rgba(83, 118, 255, 0.16);
 }
 
 button {
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  color: #08121f;
+  color: #fff;
   font-weight: 700;
-  background: linear-gradient(120deg, var(--a1), var(--a2));
-  padding: 10px 13px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  padding: 11px 16px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(84, 114, 255, 0.3);
 }
 
 .stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--muted);
-  margin-bottom: 10px;
-  font-size: 14px;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
 }
 
 .cards {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .task-card {
   border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--card);
+  border-radius: 20px;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 30px rgba(30, 56, 118, 0.12);
   overflow: hidden;
+  transition: transform .18s ease;
+}
+
+.task-card:has(.task-head:focus-visible),
+.task-card:hover {
+  transform: translateY(-1px);
 }
 
 .task-head {
@@ -102,39 +154,39 @@ button {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
-  padding: 12px;
+  gap: 12px;
+  padding: 14px;
   background: transparent;
-  color: var(--text);
+  border: 0;
   border-radius: 0;
+  color: var(--text);
+  text-align: left;
 }
 
 .left {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  text-align: left;
+  gap: 12px;
   flex: 1;
   min-width: 0;
 }
 
 .title {
-  line-height: 1.35;
-  white-space: normal;
+  font-size: clamp(16px, 3.8vw, 18px);
+  line-height: 1.34;
   overflow-wrap: anywhere;
 }
 
 .chevron {
+  color: var(--accent);
   font-size: 24px;
   line-height: 1;
-  color: var(--a1);
-  flex: 0 0 auto;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .task-card.done .title {
   text-decoration: line-through;
-  color: #64748b;
+  color: #7a89ae;
 }
 
 .task-body {
@@ -155,35 +207,40 @@ button {
 
 .notes-bar button {
   width: auto;
-  min-width: 124px;
+  min-width: 118px;
   padding: 8px 12px;
 }
 
 .note-form { display: grid; gap: 8px; }
-.notes-list { display: grid; gap: 8px; }
+
+
+.notes-list {
+  display: grid;
+  gap: 8px;
+}
 
 .note {
   border: 1px solid var(--line);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.56);
+  border-radius: 14px;
   padding: 10px;
-  background: rgba(2, 6, 23, .55);
 }
 
-.note small { color: var(--muted); }
+.note small { color: #5d709d; }
 .note p { margin: 6px 0 0; white-space: pre-wrap; }
 
 @media (max-width: 560px) {
-  .shell { padding: 12px; border-radius: 18px; }
-  .new-task { grid-template-columns: 1fr; }
-  button { width: 100%; }
-
-  .task-head {
-    width: 100%;
+  .shell {
+    border-radius: 22px;
+    padding: 14px;
   }
 
-  .task-head .title {
-    font-size: 18px;
-    line-height: 1.25;
+  .new-task {
+    grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
   }
 
   .notes-bar {
